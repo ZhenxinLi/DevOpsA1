@@ -13,12 +13,12 @@ on:
       - main
 
 jobs:
- build:
-  runs-on: ubuntu-latest
-  steps:
+ # build:
+  # runs-on: ubuntu-latest
+  # steps:
    # - run: docker compose up -d
-   - run: cd src
-   - run: npm install
+  #  - run: cd src
+  #  - run: npm install
 
 
  ci-unit-test:
@@ -32,6 +32,7 @@ jobs:
     with:
       node-version: "16"
       cache: "npm"
+      cache-dependency-path: '**/package-lock.json'
   - run: npm clean-install
 
   - name: Run Lint
