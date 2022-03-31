@@ -25,14 +25,13 @@ jobs:
   steps:
     - uses: actions/checkout@v3
 
+    - run: cd src
+    
     - name: Use Node.js 16.x
       uses: actions/setup-node@v3
       with:
         node-version: "16"
         cache: "npm"
-        cache-dependency-path: '**/package-lock.json'
-
-    - run: cd src
     
     - run: npm clean-install
 
