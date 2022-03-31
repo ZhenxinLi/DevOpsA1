@@ -20,9 +20,24 @@ jobs:
   #  - run: cd src
   #  - run: npm install
 
+ ci-lint:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v3
 
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: "16"
+        cache: "npm"
+        cache-dependency-path: '**/package-lock.json'
+
+    - run: npm clean-install
+
+    - run: npm run lint
+    
  ci-unit-test:
-  # needs: ci-lint
+  needs: ci-lint
   runs-on: ubuntu-latest
   steps:
   - uses: actions/checkout@v3
@@ -33,10 +48,8 @@ jobs:
       node-version: "16"
       cache: "npm"
       cache-dependency-path: '**/package-lock.json'
+      
   - run: npm clean-install
-
-  - name: Run Lint
-    run: npm run lint
 
   - run: npm run unit-tests
     
@@ -55,17 +68,4 @@ jobs:
       flags: unittests
       verbose: true
       dry_run: true
- ci-lint:
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v3
 
-    - name: Use Node.js 16.x
-      uses: actions/setup-node@v3
-      with:
-        node-version: "17.6"
-        cache: "npm"
-
-    - run: npm clean-install
-
-    - run: npm run lint
