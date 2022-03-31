@@ -13,6 +13,12 @@ on:
       - main
 
 jobs:
+ build:
+  runs-on: ubuntu-latest
+  steps:
+   - run: npm install
+   - run: docker compose up -d
+
  ci-unit-test:
   # needs: ci-lint
   runs-on: ubuntu-latest
