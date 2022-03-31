@@ -16,8 +16,10 @@ jobs:
  build:
   runs-on: ubuntu-latest
   steps:
-   - run: npm install
    - run: docker compose up -d
+   - run: cd src
+   - run: npm install
+
 
  ci-unit-test:
   # needs: ci-lint
