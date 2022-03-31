@@ -23,15 +23,17 @@ jobs:
  ci-lint:
   runs-on: ubuntu-latest
   steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
 
     - name: Use Node.js 16.x
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v3
       with:
         node-version: "16"
         cache: "npm"
-        # cache-dependency-path: '**/package-lock.json'
+        cache-dependency-path: '**/package-lock.json'
 
+    - run: cd src
+    
     - run: npm clean-install
 
     - run: npm run lint
