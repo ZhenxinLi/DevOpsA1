@@ -25,17 +25,15 @@ jobs:
 
  ci-lint:
   runs-on: ubuntu-latest
-  services: 
-    mongodb: 
-      image: mongodb
-      ports:
-       - 27017
+       
   env:
     working-directory: ./src
     
   steps:
     - uses: actions/checkout@v3
     
+    - run: docker compose up -d
+        
     - run: npm install --prefix src
       # working-directory: ${{env.working-directory}}
       
