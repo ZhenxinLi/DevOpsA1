@@ -34,11 +34,12 @@ jobs:
     
     - run: docker compose up -d
     
-    - run: npm run start
-        
+
     - run: npm install --prefix src
       # working-directory: ${{env.working-directory}}
       
+    - run: npm run start
+        
     - name: Use Node.js 17.x
       uses: actions/setup-node@v3
       with:
