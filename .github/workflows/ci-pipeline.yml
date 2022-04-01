@@ -37,7 +37,7 @@ jobs:
       with:
         node-version: "16"
         cache: "npm"
-        cache-dependency-path: ./src
+        cache-dependency-path: ./src/node_modules
         # working-directory: ${{env.working-directory}}
     
     - run: npm run lint
