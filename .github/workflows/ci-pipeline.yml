@@ -37,14 +37,13 @@ jobs:
       with:
         node-version: "16"
         cache: "npm"
-        cache-dependency-path: ./src/node_modules
         # working-directory: ${{env.working-directory}}
     
-    - run: npm run lint --prefix src
+    - run: npm run test-lint --prefix src
       # working-directory: ${{env.working-directory}}
     
  ci-unit-test:
-  needs: ci-lint
+  # needs: ci-lint
   runs-on: ubuntu-latest
   steps:
   - uses: actions/checkout@v3
@@ -56,9 +55,9 @@ jobs:
       cache: "npm"
       cache-dependency-path: '**/package-lock.json'
       
-  - run: npm clean-install
+  - run: npm install --prefix src
 
-  - run: npm run unit-tests
+  - run: npm run test-unit --prefix src
     
   - name: upload code coverage
     uses: actions/upload-artifact@v3
