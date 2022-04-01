@@ -41,7 +41,7 @@ jobs:
       working-directory: ${{env.working-directory}}
 
     - run: npm run lint
-      working-directory: ${{env.working-directory}}
+      # working-directory: ${{env.working-directory}}
     
  ci-unit-test:
   needs: ci-lint
