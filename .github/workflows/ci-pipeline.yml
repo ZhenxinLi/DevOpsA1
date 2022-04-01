@@ -37,10 +37,10 @@ jobs:
     - run: npm install --prefix src
       # working-directory: ${{env.working-directory}}
       
-    - name: Use Node.js 16.x
+    - name: Use Node.js 17.x
       uses: actions/setup-node@v3
       with:
-        node-version: "16"
+        node-version: "17.6.0"
         cache: "npm"
         cache-dependency-path: '**/package-lock.json'
     
@@ -53,10 +53,10 @@ jobs:
   steps:
   - uses: actions/checkout@v3
 
-  - name: Use Node.js 16.x
+  - name: Use Node.js 17.x
     uses: actions/setup-node@v3
     with:
-      node-version: "16"
+      node-version: "17.6.0"
       cache: "npm"
       cache-dependency-path: '**/package-lock.json'
       
