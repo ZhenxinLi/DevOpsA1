@@ -46,7 +46,7 @@ jobs:
         cache-dependency-path: '**/package-lock.json'
 
 
-    - run: npm run start
+    - run: npm run start --prefix src
     
     - run: npm run test-lint --prefix src
       # working-directory: ${{env.working-directory}}
