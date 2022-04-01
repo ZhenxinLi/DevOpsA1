@@ -11,21 +11,25 @@ on:
   pull_request:
     branches:
       - main
-
-jobs:
- build:
-   runs-on: ubuntu-latest
-   
-   steps:
-    - run: docker compose up -d
- 
-    - run: npm install --prefix src
     
-    - run: npm run start --prefix src
+jobs:
+# build:
+ #  runs-on: ubuntu-latest
+   
+  # steps:
+   # - run: docker compose up -d
+ 
+   # - run: npm install --prefix src
+    
+   # - run: npm run start --prefix src
 
  ci-lint:
   runs-on: ubuntu-latest
-  
+  services: 
+    mongodb: 
+      image: mongodb
+      ports:
+       - 27017
   env:
     working-directory: ./src
     
