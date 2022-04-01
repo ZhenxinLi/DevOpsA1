@@ -29,6 +29,9 @@ jobs:
   steps:
     - uses: actions/checkout@v3
     
+    - run: npm clean-install
+      working-directory: ${{env.working-directory}}
+      
     - name: Use Node.js 16.x
       uses: actions/setup-node@v3
       with:
@@ -37,9 +40,6 @@ jobs:
         cache-dependency-path: ./src
         # working-directory: ${{env.working-directory}}
     
-    - run: npm clean-install
-      working-directory: ${{env.working-directory}}
-
     - run: npm run lint
       # working-directory: ${{env.working-directory}}
     
