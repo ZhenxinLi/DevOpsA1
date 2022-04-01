@@ -34,11 +34,14 @@ jobs:
       with:
         node-version: "16"
         cache: "npm"
-        working-directory: ${{env.working-directory}}
+        cache-dependency-path: ./src
+        # working-directory: ${{env.working-directory}}
     
     - run: npm clean-install
+      working-directory: ${{env.working-directory}}
 
     - run: npm run lint
+      working-directory: ${{env.working-directory}}
     
  ci-unit-test:
   needs: ci-lint
