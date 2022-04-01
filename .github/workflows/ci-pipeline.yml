@@ -42,7 +42,7 @@ jobs:
       with:
         node-version: "16"
         cache: "npm"
-        working-directory: ${{env.working-directory}}
+        cache-dependency-path: '**/package-lock.json'
     
     - run: npm run test-lint --prefix src
       # working-directory: ${{env.working-directory}}
