@@ -70,7 +70,7 @@ jobs:
       # working-directory: ${{env.working-directory}}
       
     
-    - run: npm run test-lint --prefix src
+    - run: npm run lint --prefix src
       # working-directory: ${{env.working-directory}}
     
  ci-unit-test:
