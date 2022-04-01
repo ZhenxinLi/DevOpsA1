@@ -14,7 +14,7 @@ on:
 
 defaults: 
   run:
-    working-directory: ./src
+    working-directory: cosc2759-assignment-1-ZhenxinLi/src
 
 jobs:
  # build:
