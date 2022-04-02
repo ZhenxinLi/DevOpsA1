@@ -82,7 +82,7 @@ jobs:
       dry_run: true
       
  ci-integration-test:
- 
+  if: false
   # needs: ci-unit-test
   runs-on: ubuntu-latest
   services:
@@ -118,4 +118,25 @@ jobs:
     with: 
       name: integration-test-code-coverage
       path: ./src/coverage/coverage-final.json
-
+      
+      
+      
+ ci-end-to-end-test:
+   # needs: ci-integration-test
+   timeout-minutes: 60
+   runs-on: ubuntu-latest
+   if: github.event.deployment_status.state == 'success'
+   steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14.x'
+    - name: Install dependencies
+      run: npm ci --prefix src
+    - name: Install Playwright
+      run: npx playwright install --with-deps --prefix src
+    - name: Run Playwright tests
+      run: npm run test:e2e --prefix src
+      env:
+        # This might depend on your test-runner/language binding
+        PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
