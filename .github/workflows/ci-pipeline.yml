@@ -2,3 +2,108 @@ name: Notes Application CI Pipeline
 # create a CI pipeline based on the assignment specification
 # remember to commit often
 
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+      - feature
+      - codeFix
+  pull_request:
+    branches:
+      - main
+    
+jobs:
+# build:
+ #  runs-on: ubuntu-latest
+   
+  # steps:
+   # - run: docker compose up -d
+ 
+   # - run: npm install --prefix src
+    
+   # - run: npm run start --prefix src
+   
+
+ test:
+   runs-on: ubuntu-latest
+   steps:
+     - uses: actions/checkout@v3
+
+     - name: Use Node.js 17.x
+       uses: actions/setup-node@v3
+       with:
+         node-version: "17"
+         cache: "npm"
+         cache-dependency-path: '**/package-lock.json'
+
+     - run: npm install --prefix src
+      # working-directory: ${{env.working-directory}}
+
+     # - run: npm run test-lint
+
+     - if: github.ref == 'refs/heads/main'
+       run: npm pack
+
+     - if: github.ref == 'refs/heads/main'
+       uses: actions/upload-artifact@v3
+       with:
+         name: node-todo-${{ github.sha }}
+         path: ./*.tgz
+
+ ci-lint:
+  runs-on: ubuntu-latest
+       
+    
+  steps:
+    - uses: actions/checkout@v3
+    
+    - run: docker compose up -d
+        
+    - name: Use Node.js 17.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: "17.6.0"
+        cache: "npm"
+        cache-dependency-path: '**/package-lock.json'
+
+    - run: npm install --prefix src
+      # working-directory: ${{env.working-directory}}
+      
+    
+    - run: npm run test-lint --prefix src
+      # working-directory: ${{env.working-directory}}
+    
+ ci-unit-test:
+  # needs: ci-lint
+  runs-on: ubuntu-latest
+  steps:
+  - uses: actions/checkout@v3
+  - run: docker compose up -d
+  - name: Use Node.js 17.x
+    uses: actions/setup-node@v3
+    with:
+      node-version: "17.6.0"
+      cache: "npm"
+      cache-dependency-path: '**/package-lock.json'
+      
+  - run: npm install --prefix src
+
+  - run: npm run test-unit --prefix src
+    
+  - name: upload code coverage
+    uses: actions/upload-artifact@v3
+    with: 
+      name: unit-test-code-coverage
+      path: ./coverage/coverage-final.json
+      
+  - name: Validate Coverage
+    uses: codecov/codecov-action@v2
+    with:
+      directory: ./coverage
+      files: coverage-final.json
+      fail_ci_if_error: true
+      flags: unittests
+      verbose: true
+      dry_run: true
+
