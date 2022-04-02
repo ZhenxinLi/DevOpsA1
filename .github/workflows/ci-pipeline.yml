@@ -75,7 +75,7 @@ jobs:
       # working-directory: ${{env.working-directory}}
     
  ci-unit-test:
-  # needs: ci-lint
+  needs: ci-lint
   runs-on: ubuntu-latest
   steps:
   - uses: actions/checkout@v3
