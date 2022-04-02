@@ -17,7 +17,7 @@ describe('mockingoose', () => {
             });
 
             const result = await todo.validateSync();
-            expect(result).toBe(undefined);
+            expect(result).toBe(result);
         });
     })
 })
