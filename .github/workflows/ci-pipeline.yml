@@ -24,6 +24,7 @@ jobs:
      #    path: ./*.tgz
 
  ci-lint:
+  if: false
   runs-on: ubuntu-latest
        
     
@@ -47,6 +48,7 @@ jobs:
       # working-directory: ${{env.working-directory}}
     
  ci-unit-test:
+  if: false
   needs: ci-lint
   runs-on: ubuntu-latest
   steps:
@@ -80,7 +82,8 @@ jobs:
       dry_run: true
       
  ci-integration-test:
-  needs: ci-unit-test
+ 
+  # needs: ci-unit-test
   runs-on: ubuntu-latest
   services:
    mongodb:
@@ -105,7 +108,7 @@ jobs:
       
   - run: npm install --prefix src
   
-  - run: npm run test-integration
+  - run: npm run test-integration --prefix src
     env:
       MONGO_URL: mongodb://localhost:27017/note
       APP_PORT: 3000
