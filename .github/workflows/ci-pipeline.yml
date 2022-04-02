@@ -140,7 +140,7 @@ jobs:
       run: npm install --prefix src
       
     - name: Install Playwright
-      run: npx playwright install --with-deps --prefix src
+      run: npx playwright install --with-deps
       
     - name: Run Playwright tests
       run: npm run test:e2e --prefix src
