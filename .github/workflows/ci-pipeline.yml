@@ -24,7 +24,7 @@ jobs:
      #    path: ./*.tgz
 
  ci-lint:
-  if: false
+  # if: false
   runs-on: ubuntu-latest
        
     
@@ -48,7 +48,7 @@ jobs:
       # working-directory: ${{env.working-directory}}
     
  ci-unit-test:
-  if: false
+  # if: false
   needs: ci-lint
   runs-on: ubuntu-latest
   steps:
@@ -82,7 +82,7 @@ jobs:
       dry_run: true
       
  ci-integration-test:
-  if: false
+  # if: false
   needs: ci-unit-test
   runs-on: ubuntu-latest
   services:
@@ -122,6 +122,7 @@ jobs:
       
       
  ci-end-to-end-test:
+   if: false
    # needs: ci-integration-test
    # timeout-minutes: 60
    env:
