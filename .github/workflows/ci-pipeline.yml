@@ -83,7 +83,7 @@ jobs:
       
  ci-integration-test:
   if: false
-  # needs: ci-unit-test
+  needs: ci-unit-test
   runs-on: ubuntu-latest
   services:
    mongodb:
