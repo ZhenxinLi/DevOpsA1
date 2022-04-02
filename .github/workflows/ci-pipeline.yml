@@ -146,7 +146,7 @@ jobs:
       working-directory: ${{env.working-directory}}
       
     - name: Run Playwright tests
-      run: npm run test:e2e
+      run: npm run test:e2e --prefix src
       env:
         # This might depend on your test-runner/language binding
         PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
