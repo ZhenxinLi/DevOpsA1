@@ -95,7 +95,7 @@ jobs:
     uses: actions/upload-artifact@v3
     with: 
       name: unit-test-code-coverage
-      path: ./coverage/coverage-final.json
+      path: ./src/coverage/coverage-final.json
       
   - name: Validate Coverage
     uses: codecov/codecov-action@v2
