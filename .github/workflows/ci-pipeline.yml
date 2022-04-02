@@ -124,6 +124,8 @@ jobs:
  ci-end-to-end-test:
    # needs: ci-integration-test
    # timeout-minutes: 60
+   env:
+    working-directory: ./src
    runs-on: ubuntu-latest
    # if: github.event.deployment_status.state == 'success'
    steps:
@@ -141,6 +143,7 @@ jobs:
       
     - name: Install Playwright
       run: npx playwright install --with-deps
+      working-directory: ${{env.working-directory}}
       
     - name: Run Playwright tests
       run: npm run test:e2e
