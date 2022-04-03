@@ -24,7 +24,7 @@ jobs:
      #    path: ./*.tgz
 
  ci-lint:
-  # if: false
+  if: false
   runs-on: ubuntu-latest
        
     
@@ -48,7 +48,7 @@ jobs:
       # working-directory: ${{env.working-directory}}
     
  ci-unit-test:
-  # if: false
+  if: false
   needs: ci-lint
   runs-on: ubuntu-latest
   steps:
@@ -82,7 +82,7 @@ jobs:
       dry_run: true
       
  ci-integration-test:
-  # if: false
+  if: false
   needs: ci-unit-test
   runs-on: ubuntu-latest
   services:
@@ -121,12 +121,13 @@ jobs:
       
       
       
- ci-end-to-end-test:
-   if: false
+ ci-e2e-test:
+   # if: false
    # needs: ci-integration-test
    # timeout-minutes: 60
    env:
     working-directory: ./src
+    PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
    runs-on: ubuntu-latest
    # if: github.event.deployment_status.state == 'success'
    steps:
@@ -147,7 +148,5 @@ jobs:
       working-directory: ${{env.working-directory}}
       
     - name: Run Playwright tests
-      run: npm run test:e2e --prefix src
-      env:
-        # This might depend on your test-runner/language binding
-        PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
+      run: npm run test-e2e --prefix src
+
