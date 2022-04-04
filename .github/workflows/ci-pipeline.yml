@@ -175,6 +175,7 @@ jobs:
   
  ci-package:
   if: github.ref == 'refs/heads/main'
+  needs: ci-e2e-test
 #  needs: 
  #   - ci-integration-test
   runs-on: ubuntu-latest
