@@ -24,9 +24,7 @@ jobs:
      #    path: ./*.tgz
 
  ci-lint:
-  if: false
-  runs-on: ubuntu-latest
-       
+  runs-on: ubuntu-latest      
     
   steps:
     - uses: actions/checkout@v3
@@ -48,7 +46,6 @@ jobs:
       # working-directory: ${{env.working-directory}}
     
  ci-unit-test:
-  if: false
   needs: ci-lint
   runs-on: ubuntu-latest
   steps:
@@ -82,8 +79,7 @@ jobs:
       dry_run: true
       
  ci-integration-test:
-  # if: false
-  # needs: ci-unit-test
+  needs: ci-unit-test
   runs-on: ubuntu-latest
   services:
    mongodb:
@@ -128,8 +124,7 @@ jobs:
       
       
  ci-e2e-test:
-   # if: false
-   # needs: ci-integration-test
+   needs: ci-integration-test
    # timeout-minutes: 60
    env:
     working-directory: ./src
@@ -156,19 +151,6 @@ jobs:
     - name: Run Playwright tests
       run: npm run test-e2e --prefix src
       
-    - name: Install NodeJsScan
-      if: failure()
-      run: |
-        sudo apt-get update
-        sudo apt-get install python3-pip
-        pip3 install nodejsscan
-    - name: Execute Node Scan
-      run: |
-        nodejsscan -d . -o sast-output.json
-    
-    - run: cat sast-output.json
-
-    - run: exit $(cat sast-output.json | jq .total_count.sec)
  #   - uses: actions/upload-artifact@v3
  #     if: failure()
  #     with:
@@ -176,18 +158,40 @@ jobs:
  #       path: ./src/failureLog/
  
         
- CypressFailureLog:
-   runs-on: ubuntu-latest
-   steps:
-    - name: checkout repo
-      uses: actions/checkout@v2
-    - name: Cypress failure Log 
-      uses: cypress-io/github-action@v2
-      with: 
-        build: npm run build
-        start: npm start
-        record: true
-      env:
-        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+# CypressFailureLog:
+#   runs-on: ubuntu-latest
+#   steps:
+#    - name: checkout repo
+#      uses: actions/checkout@v2
+#    - name: Cypress failure Log 
+#      uses: cypress-io/github-action@v2
+#      with: 
+#        build: npm run build
+#        start: npm start
+#        record: true
+#      env:
+#        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+#       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
+ ci-package:
+  if: github.ref == 'refs/heads/main'
+#  needs: 
+ #   - ci-integration-test
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: "16"
+        cache: "npm"
+
+    - run: npm clean-install
+
+    - run: npm pack
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: node-todo-${{ github.sha }}
+        path: ./*.tgz
