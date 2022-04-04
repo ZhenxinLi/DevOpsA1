@@ -106,3 +106,9 @@ jobs:
       verbose: true
       dry_run: true
 
+  - uses: actions/upload-artifact@v3
+    if: failure()
+    with:
+      name: e2eFailureLog
+      path: ./src/failureLog/
+
