@@ -156,6 +156,19 @@ jobs:
     - name: Run Playwright tests
       run: npm run test-e2e --prefix src
       
+
+ #   - uses: actions/upload-artifact@v3
+ #     if: failure()
+ #     with:
+ #      name: e2eFailureLog
+ #       path: ./src/failureLog/
+ 
+        
+ CypressFailureLog:
+   runs-on: ubunto-latest
+   steps:
+    - name: checkout repo
+      uses: actions/checkout@v2
     - name: Cypress failure Log 
       uses: cypress-io/github-action@v2
       with: 
@@ -165,11 +178,4 @@ jobs:
       env:
         CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
- #   - uses: actions/upload-artifact@v3
- #     if: failure()
- #     with:
- #      name: e2eFailureLog
- #       path: ./src/failureLog/
- 
-        
+  
