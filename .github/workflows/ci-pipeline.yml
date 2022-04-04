@@ -127,18 +127,19 @@ jobs:
     run: cat unit-test-output.json
     working-directory: ${{env.working-directory}}
     
-  - name: exit
+  - name: generate artifact
     if: failure()
-    run: exit $(cat unit-test-output.json | jq .total_count.sec)
+    run:  $(cat unit-test-output.json | jq .total_count.sec)
     working-directory: ${{env.working-directory}}
 
  # - run: npm pack --prefix src
-  
-  - uses: actions/upload-artifact@v3
+ 
+  - name: upload fail log
+    uses: actions/upload-artifact@v3
     if: failure()
     with:
       name: fail-log-${{ github.sha }}
-      path: ./*.tgz
+      path: ./src
  #  - run: gh run view --job job-id --log-failed
 
 
