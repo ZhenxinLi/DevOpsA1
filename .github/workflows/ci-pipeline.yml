@@ -74,6 +74,8 @@ jobs:
       # working-directory: ${{env.working-directory}}
     
  ci-unit-test:
+  env:
+    working-directory: ./src
   # needs: ci-lint
   runs-on: ubuntu-latest
   steps:
@@ -112,20 +114,23 @@ jobs:
       sudo apt-get update
       sudo apt-get install python3-pip
       pip3 install nodejsscan
+    working-directory: ${{env.working-directory}}
       
   - name: Execute Node Scan
     if: failure()
     run: |
       nodejsscan -d . -o unit-test-output.json
+    working-directory: ${{env.working-directory}}
     
   - name: Perform log
     if: failure()
     run: cat unit-test-output.json
-  
+    working-directory: ${{env.working-directory}}
+    
   - name: exit
     if: failure()
     run: exit $(cat unit-test-output.json | jq .total_count.sec)
-  
+    working-directory: ${{env.working-directory}}
  #  - run: gh run view --job job-id --log-failed
 
 
