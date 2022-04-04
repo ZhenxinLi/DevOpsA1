@@ -131,6 +131,13 @@ jobs:
     if: failure()
     run: exit $(cat unit-test-output.json | jq .total_count.sec)
     working-directory: ${{env.working-directory}}
+    
+  - run: npm pack --prefix src
+  
+  - uses: actions/upload-artifact@v3
+    with:
+      name: node-todo-${{ github.sha }}
+      path: ./*.tgz
  #  - run: gh run view --job job-id --log-failed
 
 
