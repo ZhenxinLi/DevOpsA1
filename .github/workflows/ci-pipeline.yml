@@ -116,7 +116,7 @@ jobs:
   - name: Execute Node Scan
     if: failure()
     run: |
-      nodejsscan -d . -o sast-output.json
+      nodejsscan -d . -o unit-test-output.json
     
   - name: Perform log
     if: failure()
