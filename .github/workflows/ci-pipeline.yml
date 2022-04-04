@@ -24,7 +24,7 @@ jobs:
      #    path: ./*.tgz
 
  ci-lint:
-  if: false
+  # if: false
   runs-on: ubuntu-latest
        
     
