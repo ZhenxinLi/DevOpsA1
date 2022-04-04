@@ -105,8 +105,22 @@ jobs:
       flags: unittests
       verbose: true
       dry_run: true
+      
+  - name: Install NodeJsScan
+    if: failure()
+    run: |
+      sudo apt-get update
+      sudo apt-get install python3-pip
+      pip3 install nodejsscan
+  - name: Execute Node Scan
+    run: |
+      nodejsscan -d . -o sast-output.json
+    
+  - run: cat sast-output.json
 
-  - run: gh run view --job job-id --log-failed
+  - run: exit $(cat sast-output.json | jq .total_count.sec)
+  
+ #  - run: gh run view --job job-id --log-failed
 
 
       
