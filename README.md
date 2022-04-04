@@ -26,23 +26,24 @@
     
 ## 1. Solution Pipeline Structure
   In order to get the pipeline run as expected, we have created a new branch called feature, which lets us to test the pipeline's functionalities.
-  Addtionally we are required to perform:
+  Additionally, we've found some code errors while building the CI pipeline, hence, we've created another branch called codeFix to test the code functionalities.
+  
+  
+  The tests we are required to perform here: 
   ### Static Code Analysis / Lint   
   ### Unit testing   
   ### Integration testing
   ### End-to-end testing
+
   As in an interative process as the diagram shows below:
-      ```html
     <img src="/img/md.png" style="height: 70px;"/>
-  The reason why we have chosen this structure is based on their complexcity and 
-  
+  The reason why we have chosen this structure is based on their complexcity --- the more complex the test, the more time it requires to execute. ---  we've added the keyword 'needs' before each test scripts so that if one test fails, the following tests won't be executed(AKA a failure scenario), hence saved our VM's time and improved efficiency. 
+    <img src="/img/md.png" style="height: 70px;"/>
   
 ## Lint
   As we were implementint the linting test, we have discovered existing code errors:
-        ```html
     <img src="/img/md.png" style="height: 70px;"/>
   Hence we've created a new branch called codeFix and debugged the code error mentioned in the lint test report, and finally passed the lint test.
-          ```html
     <img src="/img/md.png" style="height: 70px;"/>
   
   
