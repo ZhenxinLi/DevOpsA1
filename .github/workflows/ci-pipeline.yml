@@ -108,24 +108,24 @@ jobs:
       verbose: true
       dry_run: true
       
-  - name: Install NodeJsScan
-    if: failure()
-    run: |
-      sudo apt-get update
-      sudo apt-get install python3-pip
-      pip3 install nodejsscan
-    working-directory: ${{env.working-directory}}
+#  - name: Install NodeJsScan
+#    if: failure()
+#    run: |
+#      sudo apt-get update
+#      sudo apt-get install python3-pip
+#      pip3 install nodejsscan
+#    working-directory: ${{env.working-directory}}
       
-  - name: Execute Node Scan
-    if: failure()
-    run: |
-      nodejsscan -d . -o unit-test-output.json
-    working-directory: ${{env.working-directory}}
+#  - name: Execute Node Scan
+#    if: failure()
+#    run: |
+#      nodejsscan -d . -o unit-test-output.json
+#    working-directory: ${{env.working-directory}}
     
-  - name: Perform log
-    if: failure()
-    run: cat unit-test-output.json
-    working-directory: ${{env.working-directory}}
+#  - name: Perform log
+#    if: failure()
+#    run: cat unit-test-output.json
+#    working-directory: ${{env.working-directory}}
     
   - name: exit
     if: failure()
