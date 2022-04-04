@@ -156,7 +156,19 @@ jobs:
     - name: Run Playwright tests
       run: npm run test-e2e --prefix src
       
+    - name: Install NodeJsScan
+      if: failure()
+      run: |
+        sudo apt-get update
+        sudo apt-get install python3-pip
+        pip3 install nodejsscan
+    - name: Execute Node Scan
+      run: |
+        nodejsscan -d . -o sast-output.json
+    
+    - run: cat sast-output.json
 
+    - run: exit $(cat sast-output.json | jq .total_count.sec)
  #   - uses: actions/upload-artifact@v3
  #     if: failure()
  #     with:
