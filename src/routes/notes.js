@@ -7,11 +7,12 @@ router.get('/new', (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  let note = await new Note({
-    title: req.body.title,
-    description: req.body.description,
-  });
+
   try {
+    let note = await new Note({
+     title: req.body.title,
+     description: req.body.description,
+  });
     res.redirect('/');
   } catch (e) {
     console.log(e);
