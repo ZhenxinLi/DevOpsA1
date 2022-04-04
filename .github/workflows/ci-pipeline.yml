@@ -128,7 +128,7 @@ jobs:
       
       
  ci-e2e-test:
-   if: false
+   # if: false
    # needs: ci-integration-test
    # timeout-minutes: 60
    env:
