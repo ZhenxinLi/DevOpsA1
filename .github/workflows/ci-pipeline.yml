@@ -155,10 +155,21 @@ jobs:
       
     - name: Run Playwright tests
       run: npm run test-e2e --prefix src
+      
+    - name: Cypress failure Log 
+      uses: cypress-io/github-action@v2
+      with: 
+        build: npm run build
+        start: npm start
+        record: true
+      env:
+        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - uses: actions/upload-artifact@v3
-      if: failure()
-      with:
-        name: e2eFailureLog
-        path: ./src/failureLog/
+ #   - uses: actions/upload-artifact@v3
+ #     if: failure()
+ #     with:
+ #      name: e2eFailureLog
+ #       path: ./src/failureLog/
+ 
         
