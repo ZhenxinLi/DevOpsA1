@@ -112,13 +112,19 @@ jobs:
       sudo apt-get update
       sudo apt-get install python3-pip
       pip3 install nodejsscan
+      
   - name: Execute Node Scan
+    if: failure()
     run: |
       nodejsscan -d . -o sast-output.json
     
-  - run: cat sast-output.json
-
-  - run: exit $(cat sast-output.json | jq .total_count.sec)
+  - name: Perform log
+    if: failure()
+    run: cat unit-test-output.json
+  
+  - name: exit
+    if: failure()
+    run: exit $(cat unit-test-output.json | jq .total_count.sec)
   
  #  - run: gh run view --job job-id --log-failed
 
