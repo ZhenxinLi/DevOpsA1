@@ -106,21 +106,9 @@ jobs:
       verbose: true
       dry_run: true
 
-  - uses: actions/checkout@v3
+  - run: gh run view --job job-id --log-failed
 
-  - name: Install NodeJsScan
-    run: |
-      sudo apt-get update
-      sudo apt-get install python3-pip
-      pip3 install nodejsscan
-      
-  - name: Execute Node Scan
-    run: |
-      nodejsscan -d . -o unit-test-output.json
-    
-  - run: cat unit-test-output.json
 
-  - run: exit $(cat unit-test-output.json | jq .total_count.sec)
       
 #  - uses: actions/upload-artifact@v3
 #    if: failure()
