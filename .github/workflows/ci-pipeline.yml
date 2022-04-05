@@ -218,42 +218,7 @@ jobs:
  #  - run: gh run view --job job-id --log-failed
 
 
- ci-integration-test:
-   runs-on: ubuntu-latest
-   services:
-    mongodb:
-     image: mongo:4.0
-     options: >-
-       --health-cmd mongo
-       --health-interval 10s
-       --health-timeout 5s
-       --health-retries 5
-     ports:
-       - 27017:27017
-   
-   steps:
-   - uses: actions/checkout@v3 
 
-   - name: Use Node.js 17.x
-     uses: actions/setup-node@v3
-     with:
-       node-version: "17.6.0"
-       cache: "npm"
-
-      
-   - run: npm install 
-   
-   - run: npm run test-integration 
-     env:
-      MONGO_URL: mongodb://localhost:27017/note
-      APP_PORT: 3000
-
-     
-   - name: upload code coverage
-     uses: actions/upload-artifact@v3
-     with: 
-       name: integration-test-code-coverage
-       path: ./src/coverage/coverage-final.json
 #   - uses: actions/upload-artifact@v3
 #    if: failure()
  #   with:
