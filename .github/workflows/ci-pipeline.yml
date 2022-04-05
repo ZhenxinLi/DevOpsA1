@@ -102,14 +102,12 @@ jobs:
   - run: npm run test-unit --prefix src
     
   - if: github.ref == 'refs/heads/main'
-  - name: upload code coverage
     uses: actions/upload-artifact@v3
     with: 
       name: unit-test-code-coverage
       path: ./src/coverage/coverage-final.json
       
   - if: github.ref == 'refs/heads/main'     
-  - name: Validate Coverage
     uses: codecov/codecov-action@v2
     with:
       directory: ./src/coverage
@@ -151,7 +149,6 @@ jobs:
       APP_PORT: 3000
 
   - if: github.ref == 'refs/heads/main'  
-  - name: upload code coverage
     uses: actions/upload-artifact@v3
     with: 
       name: integration-test-code-coverage
