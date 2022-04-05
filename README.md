@@ -75,7 +75,7 @@
   There were also bugs in our unit testing:  
   
   <p align="center">
-    <img src="/img/unitFail.png" style="height: 800px;">  
+    <img src="/img/unitFail.png" style="height: 600px;">  
   </p> 
   
   After debugging the code we will be able to pass to the next stage.
@@ -109,7 +109,7 @@
   In case that the test fails, it breaks the build and returns a detailed log:  
   
   <p align="center">
-    <img src="/img/inteFail.png" style="height: 500px;">  
+    <img src="/img/e2eF.png" style="height: 500px;">  
   </p> 
        
 ## Artefacts
@@ -120,7 +120,13 @@
   <p align="center">
     <img src="/img/arti.png" style="height: 400px;">  
   </p> 
-       
+  
+  *changes to sub branches will trigger the test but no artefacts will be generated*
+  
+  <p align="center">
+    <img src="/img/subBranch.png" style="height: 400px;">  
+  </p> 
+         
 ## CS build trigger   
   Our pipeline script has ensured triggering when a push occurs to any branch and works with all existing branches:  
   
