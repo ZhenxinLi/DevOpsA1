@@ -217,9 +217,8 @@ jobs:
  #     path: ./src
  #  - run: gh run view --job job-id --log-failed
 
+#   - uses: actions/upload-artifact@v3
 
-      
-#  - uses: actions/upload-artifact@v3
 #    if: failure()
  #   with:
  #     name: e2eFailureLog
