@@ -1,1 +1,277 @@
+name: Notes Application CI Pipeline
+# create a CI pipeline based on the assignment specification
+# remember to commit often
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+      - feature
+      - codeFix
+  pull_request:
+    branches:
+      - main
+    
+jobs:
+
+     # - if: github.ref == 'refs/heads/main'
+    #   run: npm pack
+
+     # - if: github.ref == 'refs/heads/main'
+      # uses: actions/upload-artifact@v3
+    #   with:
+   #      name: node-todo-${{ github.sha }}
+     #    path: ./*.tgz
+     
+# build:
+ #  runs-on: ubuntu-latest
+   
+  # steps:
+   # - run: docker compose up -d
+ 
+   # - run: npm install --prefix src
+    
+   # - run: npm run start --prefix src
+   
+
+# test:
+ #  runs-on: ubuntu-latest
+ #  steps:
+  #   - uses: actions/checkout@v3
+
+  #   - name: Use Node.js 17.x
+   #    uses: actions/setup-node@v3
+    #   with:
+   #      node-version: "17"
+    #     cache: "npm"
+     #    cache-dependency-path: '**/package-lock.json'
+
+  #   - run: npm install --prefix src
+      # working-directory: ${{env.working-directory}}
+
+     # - run: npm run test-lint
+
+ #    - if: github.ref == 'refs/heads/main'
+  #     run: npm pack
+
+ #    - if: github.ref == 'refs/heads/main'
+  #     uses: actions/upload-artifact@v3
+   #    with:
+    #     name: node-todo-${{ github.sha }}
+     #    path: ./*.tgz
+
+ ci-lint:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v3
+    
+    - run: docker compose up -d
+        
+    - name: Use Node.js 17.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: "17.6.0"
+        cache: "npm"
+        cache-dependency-path: '**/package-lock.json'
+
+    - run: npm install --prefix src
+      # working-directory: ${{env.working-directory}}
+      
+    
+    - run: npm run test-lint --prefix src
+      # working-directory: ${{env.working-directory}}
+    
+ ci-unit-test:
+  needs: ci-lint
+  env:
+    working-directory: ./src
+  runs-on: ubuntu-latest
+  steps:
+  - uses: actions/checkout@v3
+  - run: docker compose up -d
+  - name: Use Node.js 17.x
+    uses: actions/setup-node@v3
+    with:
+      node-version: "17.6.0"
+      cache: "npm"
+      cache-dependency-path: '**/package-lock.json'
+      
+  - run: npm install --prefix src
+
+  - run: npm run test-unit --prefix src
+    
+  - if: github.ref == 'refs/heads/main'
+    uses: actions/upload-artifact@v3
+    with: 
+      name: unit-test-code-coverage
+      path: ./src/coverage/coverage-final.json
+      
+  - if: github.ref == 'refs/heads/main'     
+    uses: codecov/codecov-action@v2
+    with:
+      directory: ./src/coverage
+      files: coverage-final.json
+      fail_ci_if_error: true
+      flags: unittests
+      verbose: true
+      dry_run: true
+      
+ ci-integration-test:
+  needs: ci-unit-test
+  runs-on: ubuntu-latest
+  services:
+   mongodb:
+    image: mongo:4.0
+    options: >-
+      --health-cmd mongo
+      --health-interval 10s
+      --health-timeout 5s
+      --health-retries 5
+    ports:
+      - 27017:27017
+  
+  steps:
+  - uses: actions/checkout@v3
+
+  - name: Use Node.js 17.x
+    uses: actions/setup-node@v3
+    with:
+      node-version: "17.6.0"
+      cache: "npm"
+      cache-dependency-path: '**/src/package-lock.json'
+      
+  - run: npm install --prefix src
+  
+  - run: npm run test-integration --prefix src
+    env:
+      MONGO_URL: mongodb://localhost:27017/note
+      APP_PORT: 3000
+
+  - if: github.ref == 'refs/heads/main'  
+    uses: actions/upload-artifact@v3
+    with: 
+      name: integration-test-code-coverage
+      path: ./src/coverage/coverage-final.json
+      
+      
+      
+ ci-e2e-test:
+   needs: ci-integration-test
+   # timeout-minutes: 60
+   env:
+    working-directory: ./src
+    PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
+   runs-on: ubuntu-latest
+   # if: github.event.deployment_status.state == 'success'
+   steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js 17.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: '17.6.0'
+        cache: "npm"
+        cache-dependency-path: '**/src/package-lock.json'
+        
+    - name: Install dependencies
+      run: npm install --prefix src
+      
+    - name: Install Playwright
+      run: npx playwright install --with-deps
+      working-directory: ${{env.working-directory}}
+      
+    - name: Run Playwright tests
+      run: npm run test-e2e --prefix src
+  # - name: Install NodeJsScan
+ #   if: failure()
+ #   run: |
+ #     sudo apt-get update
+ #     sudo apt-get install python3-pip
+ #     pip3 install nodejsscan
+ #   working-directory: ${{env.working-directory}}
+      
+ # - name: Execute Node Scan
+ #   if: failure()
+ #   run: |
+ #     nodejsscan -d . -o unit-test-output.json
+ #   working-directory: ${{env.working-directory}}
+ #   
+ # - name: Perform log
+ #   if: failure()
+ #   run: cat unit-test-output.json
+ #   working-directory: ${{env.working-directory}}
+ #   
+ # - name: generate artifact
+ #   if: failure()
+ #   run:  $(cat unit-test-output.json | jq .total_count.sec)
+ #   working-directory: ${{env.working-directory}}
+
+ # - run: npm pack --prefix src
+ 
+ # - name: upload fail log
+ #   uses: actions/upload-artifact@v3
+ #   if: failure()
+ #   with:
+ #     name: fail-log-${{ github.sha }}
+ #     path: ./src
+ #  - run: gh run view --job job-id --log-failed
+
+
+      
+#  - uses: actions/upload-artifact@v3
+#    if: failure()
+ #   with:
+ #     name: e2eFailureLog
+  #    path: ./src/failureLog/
+ #   - uses: actions/upload-artifact@v3
+ #     if: failure()
+ #     with:
+ #      name: e2eFailureLog
+ #       path: ./src/failureLog/
+ 
+        
+# CypressFailureLog:
+#   runs-on: ubuntu-latest
+#   steps:
+#    - name: checkout repo
+#      uses: actions/checkout@v2
+#    - name: Cypress failure Log 
+#      uses: cypress-io/github-action@v2
+#      with: 
+#        build: npm run build
+#        start: npm start
+#        record: true
+#      env:
+#        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+#       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+ ci-package:
+  env:
+    working-directory: ./src
+  if: github.ref == 'refs/heads/main'
+  needs: ci-e2e-test
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: "16"
+        cache: "npm"
+        cache-dependency-path: '**/package-lock.json'
+        
+    - run: npm install --prefix src
+    
+    - name: pack artifacts
+      run: npm pack --prefix src
+      working-directory: ${{env.working-directory}}
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: node-todo-${{ github.sha }}
+        path: ./src/*.tgz
+
+
 
