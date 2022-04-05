@@ -261,9 +261,9 @@ jobs:
         node-version: "16"
         cache: "npm"
 
-    - run: npm clean-install
+    - run: npm install --prefix src
 
-    - run: npm pack
+    - run: npm pack --prefix src
 
     - uses: actions/upload-artifact@v3
       with:
