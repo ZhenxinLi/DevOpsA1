@@ -21,7 +21,7 @@
   
   Additionally, we've found some code errors while building the CI pipeline, hence, we've created another branch called codeFix for debugging.  
   
-  Also, most of the dependency files are located in the src directory, thus most actions are set with a working directory of src, by using *env settings* and *--prefix-src* keyword.  
+  Also, most of the dependency files are located in the src directory, thus most actions are set with a working directory of src, by using *env settings* and *--prefix-src* keywords.  
   
   Finally, the main branch is protected from direct commits. New features are developed on feature branches and merged into master with Pull Requests.  
   
@@ -51,7 +51,7 @@
   The reason why we have chosen this structure is based on their complexcity --- the more complex the test, the more time it requires to execute. ---  we've added the keyword 'needs' before each test scripts so that if one test fails, the following tests won't be executed(AKA a failure scenario), hence saved our VM's time and improved efficiency.  
   
   <p align="center">
-    <img src="/img/FailureScenario.png" style="height: 200px;">  
+    <img src="/img/FailureScenario.png" style="height: 180px;">  
   </p>
   
 ## Lint(Static Code Analysis)
@@ -100,7 +100,7 @@
   If the test fails, it breaks the build and returns a failure log:  
   
   <p align="center">
-    <img src="/img/inteFail.png" style="height: 600px;">  
+    <img src="/img/inteFail.png" style="height: 500px;">  
   </p> 
 
 ## E2E Tests
@@ -109,7 +109,7 @@
   In case that the test fails, it breaks the build and returns a detailed log:  
   
   <p align="center">
-    <img src="/img/inteFail.png" style="height: 600px;">  
+    <img src="/img/inteFail.png" style="height: 500px;">  
   </p> 
        
 ## Artefacts
