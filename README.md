@@ -41,11 +41,12 @@
   flowchart TD;
     A[Push to branches] -- Triggers --> B[Lint];
     B --> C[Unit Test];
-    C --> D[UT Code Coverage];
+    C --> D(UT Code Coverage);
     C --> E[Integration Test];
-    E --> F[IT Code Coverage];
+    E --> F(IT Code Coverage);
     E --> G[E2E Test];
     G -- If on Main --> H[package];
+    H --> I(package artefact);
   ```
     
   The reason why we have chosen this structure is based on their complexcity --- the more complex the test, the more time it requires to execute. ---  we've added the keyword 'needs' before each test scripts so that if one test fails, the following tests won't be executed(AKA a failure scenario), hence saved our VM's time and improved efficiency.  
