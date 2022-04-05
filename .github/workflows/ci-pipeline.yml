@@ -260,9 +260,10 @@ jobs:
       with:
         node-version: "16"
         cache: "npm"
-
+        cache-dependency-path: '**/package-lock.json'
+        
     - run: npm install --prefix src
-
+    
     - run: npm pack --prefix src
 
     - uses: actions/upload-artifact@v3
