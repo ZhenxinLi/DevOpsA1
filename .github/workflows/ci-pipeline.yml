@@ -249,6 +249,8 @@ jobs:
 #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
  ci-package:
+  env:
+    working-directory: ./src
   if: github.ref == 'refs/heads/main'
   needs: ci-e2e-test
   runs-on: ubuntu-latest
@@ -264,12 +266,14 @@ jobs:
         
     - run: npm install --prefix src
     
-    - run: npm pack --prefix src
+    - name: pack artifacts
+      run: npm pack --prefix src
+      working-directory: ${{env.working-directory}}
 
     - uses: actions/upload-artifact@v3
       with:
         name: node-todo-${{ github.sha }}
-        path: ./*.tgz
+        path: ./src/*.tgz
 
 
 
