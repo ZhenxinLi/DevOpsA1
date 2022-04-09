@@ -118,6 +118,8 @@
   
   If the tests have all passed, the ci pack pipeline will run and upload an artefact named *node-todo-xxxx* that can be deployed.  
   
+  The artefacts will be generated on the master branch ONLY, as specified in the requirements
+  
   <p align="center">
     <img src="/img/arti.png" style="height: 400px;">  
   </p> 
