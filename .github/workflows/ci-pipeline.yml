@@ -148,7 +148,10 @@ jobs:
       MONGO_URL: mongodb://localhost:27017/note
       APP_PORT: 3000
 
-  - if: github.ref == 'refs/heads/main'  
+  - name: upload artefact
+    if: |
+      always() ||
+      (github.ref == 'refs/heads/main'  )
     uses: actions/upload-artifact@v3
     with: 
       name: integration-test-code-coverage
