@@ -9,6 +9,7 @@ on:
       - feature/**
       - feature
       - codeFix
+      - pipeline
   pull_request:
     branches:
       - main
